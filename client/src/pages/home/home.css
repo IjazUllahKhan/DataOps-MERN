@@ -1,0 +1,35 @@
+.export_btn,
+.search_btn {
+  background: #479c88;
+  border: none;
+}
+.export_btn:hover,
+.search_btn:hover {
+  background: #1f856d;
+}
+.dropdown_btn {
+  background: none !important;
+  border: none;
+  font-size: 20px;
+}
+
+.dropdown_btn i {
+  color: blue;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown_btn:hover {
+  color: blue !important;
+}
+
+.dropdown_btn,
+.dropdown_btn:focus,
+.dropdown_btn:active,
+.dropdown_btn.show {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
