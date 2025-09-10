@@ -12,6 +12,8 @@
   padding: 14px;
 }
 .brand {
-  font-weight: 100;
+  font-weight: bolder;
   font-size: xx-large;
+  text-decoration: none;
+  color: white;
 }
