@@ -28,7 +28,7 @@ const userSChema = new mongoose.Schema({
     require: true,
     unique: true,
     minlength: 11,
-    maxlength: 10,
+    maxlength: 11,
   },
 
   location: {

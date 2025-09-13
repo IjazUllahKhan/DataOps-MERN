@@ -1,12 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./database/connection.js";
-
+import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
 dotenv.config();
 
+const app = express();
+app.use(cors());
+app.use(express.json());
 const port = 7000;
 
-const app = express();
+app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send("Hello World");
