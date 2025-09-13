@@ -3,22 +3,13 @@ import moment from "moment/moment.js";
 
 const userRegisterationController = async (req, res) => {
   const file = req.file.filename;
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    mobile,
-    location,
-    gender,
-    status,
-  } = req.body;
+  const { firstName, lastName, email, mobile, location, gender, status } =
+    req.body;
 
   if (
     !firstName ||
     !lastName ||
     !email ||
-    !password ||
     !mobile ||
     !location ||
     !gender ||
@@ -30,7 +21,6 @@ const userRegisterationController = async (req, res) => {
 
   try {
     const preUser = await User.findOne({ email: email });
-    console.log(preUser);
 
     if (preUser) {
       return res.status(409).json({ message: "This email is already used" });
@@ -40,7 +30,6 @@ const userRegisterationController = async (req, res) => {
       firstName,
       lastName,
       email,
-      password,
       mobile,
       location,
       gender,

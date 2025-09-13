@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { registerAPI } from "../../services/apis";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const formRef = useRef(null);
   const [inputValue, setInputValue] = useState({
     firstName: "",
     lastName: "",
@@ -42,7 +46,7 @@ const Register = () => {
     { value: "inactive", label: "Inactive" },
   ];
 
-  const formHandler = (e) => {
+  const formHandler = async (e) => {
     e.preventDefault();
     const { firstName, lastName, email, mobile, location, gender } = inputValue;
     if (
@@ -54,8 +58,30 @@ const Register = () => {
       gender === ""
     ) {
       return toast.warning("Please fill all the fields");
+    } else {
+      const userData = new FormData(formRef.current);
+      const header = { "Content-Type": "multipart/form-data" };
+      const response = await registerAPI(userData, header);
+
+      if (response.status === 201) {
+        toast.success("User Registered Successfully");
+        setTimeout(() => {
+          setInputValue({
+            firstName: "",
+            lastName: "",
+            email: "",
+            mobile: "",
+            location: "",
+          });
+          setStatus("active");
+          setProfileImg(null);
+          setPreview(null);
+          navigate("/");
+        }, 1000);
+      } else {
+        toast.error(response.data.message);
+      }
     }
-    return toast.success("Registration Completed Successfully");
   };
 
   return (
@@ -80,7 +106,7 @@ const Register = () => {
               }}
             />
           </div>
-          <Form onSubmit={formHandler} className="row">
+          <Form ref={formRef} onSubmit={formHandler} className="row">
             <Form.Group className="mb-3 col-lg-6" controlId="firstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
@@ -153,6 +179,7 @@ const Register = () => {
             <Form.Group className="mb-3 col-lg-6" controlId="status">
               <Form.Label>Select Your Status</Form.Label>
               <Select
+                name="status"
                 options={options}
                 value={options.find((option) => option.value === status)}
                 onChange={statusHandler}
@@ -161,7 +188,11 @@ const Register = () => {
 
             <Form.Group className="mb-3 col-lg-6" controlId="profile">
               <Form.Label>Select Your Profile Picture</Form.Label>
-              <Form.Control type="file" onChange={profileImgHandler} />
+              <Form.Control
+                name="profileImg"
+                type="file"
+                onChange={profileImgHandler}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3 col-lg-6" controlId="location">
