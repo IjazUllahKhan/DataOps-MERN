@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { userContext } from "../../contexts/userContext";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -10,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(userContext);
   const formRef = useRef(null);
   const [inputValue, setInputValue] = useState({
     firstName: "",
@@ -64,20 +66,18 @@ const Register = () => {
       const response = await registerAPI(userData, header);
 
       if (response.status === 201) {
-        toast.success("User Registered Successfully");
-        setTimeout(() => {
-          setInputValue({
-            firstName: "",
-            lastName: "",
-            email: "",
-            mobile: "",
-            location: "",
-          });
-          setStatus("active");
-          setProfileImg(null);
-          setPreview(null);
-          navigate("/");
-        }, 1000);
+        setInputValue({
+          firstName: "",
+          lastName: "",
+          email: "",
+          mobile: "",
+          location: "",
+        });
+        setStatus("active");
+        setProfileImg(null);
+        setPreview(null);
+        setUser(response.data.userData);
+        navigate("/");
       } else {
         toast.error(response.data.message);
       }

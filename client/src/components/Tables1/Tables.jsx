@@ -40,7 +40,7 @@ const Tables = () => {
                         >
                           <Badge>
                             <span>Status&nbsp; </span>{" "}
-                            <i class="fa-solid fa-angle-down"></i>
+                            <i className="fa-solid fa-angle-down"></i>
                           </Badge>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -59,7 +59,7 @@ const Tables = () => {
                           className="action"
                           id="dropdown-basic"
                         >
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                          <i className="fa-solid fa-ellipsis-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item>
@@ -74,7 +74,7 @@ const Tables = () => {
                           <Dropdown.Item>
                             <NavLink>
                               <i
-                                class="fa-solid fa-pen-to-square"
+                                className="fa-solid fa-pen-to-square"
                                 style={{ color: "blue" }}
                               ></i>{" "}
                               <span>Edit</span>
@@ -83,7 +83,7 @@ const Tables = () => {
                           <Dropdown.Item>
                             <div>
                               <i
-                                class="fa-solid fa-trash"
+                                className="fa-solid fa-trash"
                                 style={{ color: "red" }}
                               ></i>{" "}
                               <span>Delete</span>
@@ -106,7 +106,7 @@ const Tables = () => {
                         >
                           <Badge>
                             <span>Status&nbsp; </span>{" "}
-                            <i class="fa-solid fa-angle-down"></i>
+                            <i className="fa-solid fa-angle-down"></i>
                           </Badge>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -125,13 +125,13 @@ const Tables = () => {
                           className="action"
                           id="dropdown-basic"
                         >
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                          <i className="fa-solid fa-ellipsis-vertical"></i>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item>
                             <NavLink>
                               <i
-                                class="fa-solid fa-eye"
+                                className="fa-solid fa-eye"
                                 style={{ color: "green" }}
                               ></i>{" "}
                               <span>View</span>
@@ -140,7 +140,7 @@ const Tables = () => {
                           <Dropdown.Item>
                             <NavLink>
                               <i
-                                class="fa-solid fa-pen-to-square"
+                                className="fa-solid fa-pen-to-square"
                                 style={{ color: "blue" }}
                               ></i>{" "}
                               <span>Edit</span>
@@ -149,7 +149,7 @@ const Tables = () => {
                           <Dropdown.Item>
                             <div>
                               <i
-                                class="fa-solid fa-trash"
+                                className="fa-solid fa-trash"
                                 style={{ color: "red" }}
                               ></i>{" "}
                               <span>Delete</span>

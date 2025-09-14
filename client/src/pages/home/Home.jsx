@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
+import { userContext } from "../../contexts/userContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -8,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import "./home.css";
 const Home = () => {
   const [showspin, setShowSpin] = useState(true);
-
+  const { user, setUser } = useContext(userContext);
   const navigate = useNavigate();
 
   const adduser = () => {
@@ -23,6 +25,19 @@ const Home = () => {
 
   return (
     <>
+      {user && (
+        <Alert
+          variant="success"
+          onClose={() => setUser(null)}
+          dismissible
+          className="shadow-lg rounded-3"
+        >
+          <Alert.Heading>Registration Successful 🎉</Alert.Heading>
+          <p>
+            <strong>{user.firstName}</strong> has been successfully added!
+          </p>
+        </Alert>
+      )}
       <div className="container-fluid">
         <div
           className="main_div"
@@ -46,7 +61,7 @@ const Home = () => {
             <div className="add_btn">
               <Button variant="primary" onClick={adduser}>
                 {" "}
-                <i class="fa-solid fa-plus"></i>&nbsp; Add User
+                <i className="fa-solid fa-plus"></i>&nbsp; Add User
               </Button>
             </div>
           </div>
@@ -88,7 +103,7 @@ const Home = () => {
               <h3>Short By Value</h3>
               <Dropdown className="text-center">
                 <Dropdown.Toggle className="dropdown_btn" id="dropdown-basic">
-                  <i class="fa-solid fa-sort"></i>
+                  <i className="fa-solid fa-sort"></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item>New</Dropdown.Item>
