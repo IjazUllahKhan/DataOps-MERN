@@ -6,18 +6,35 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Tables from "../../components/Tables1/Tables";
 import Spiner from "../../components/spiner/Spiner";
+import { usersGetAPI } from "../../services/apis";
 import { useNavigate } from "react-router-dom";
 import "./home.css";
 const Home = () => {
   const [showspin, setShowSpin] = useState(true);
   const { user, setUser } = useContext(userContext);
+  const [allUser, setAllUser] = useState([]);
   const navigate = useNavigate();
 
   const adduser = () => {
     navigate("/register");
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await usersGetAPI();
+      if (response.status == 200) {
+        setAllUser(response.data);
+      } else {
+        console.log("Error while fetching users");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    fetchData();
+
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
@@ -140,7 +157,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          {showspin ? <Spiner /> : <Tables />}
+          {showspin ? <Spiner /> : <Tables users={allUser} />}
         </div>
       </div>
     </>
