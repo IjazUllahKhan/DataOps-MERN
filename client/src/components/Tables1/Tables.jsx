@@ -5,6 +5,7 @@ import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
 import Badge from "react-bootstrap/Badge";
 import { NavLink } from "react-router-dom";
+import { BASE_URL } from "../../services/helper";
 import "./table.css";
 
 const Tables = ({ users }) => {
@@ -59,7 +60,10 @@ const Tables = ({ users }) => {
                             </Dropdown>
                           </td>
                           <td className="img_parent">
-                            <img src={"./avatar.png"} alt="img" />
+                            <img
+                              src={`${BASE_URL}/uploads/${element.profileImg}`}
+                              alt="img"
+                            />
                           </td>
                           <td>
                             <Dropdown>
@@ -72,7 +76,10 @@ const Tables = ({ users }) => {
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 <Dropdown.Item>
-                                  <NavLink>
+                                  <NavLink
+                                    to={`/profile/${element._id}`}
+                                    className="text-decoration-none"
+                                  >
                                     <i
                                       class="fa-solid fa-eye"
                                       style={{ color: "green" }}
@@ -81,7 +88,10 @@ const Tables = ({ users }) => {
                                   </NavLink>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                  <NavLink>
+                                  <NavLink
+                                    to={`/edit/${element._id}`}
+                                    className="text-decoration-none"
+                                  >
                                     <i
                                       className="fa-solid fa-pen-to-square"
                                       style={{ color: "blue" }}
@@ -105,7 +115,7 @@ const Tables = ({ users }) => {
                       );
                     })
                   ) : (
-                    <div>No user found</div>
+                    <div className="text-center">No user found</div>
                   )}
                 </tbody>
               </Table>

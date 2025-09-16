@@ -20,3 +20,13 @@ export const usersGetAPI = async () => {
   );
   return response;
 };
+
+export const singleUserGetAPI = async (id) => {
+  const response = await commonRequest(
+    `${BASE_URL}/user/profile/${id}`,
+    "GET",
+    null,
+    ""
+  );
+  return response;
+};

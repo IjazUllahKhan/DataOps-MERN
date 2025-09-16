@@ -2,6 +2,7 @@ import express from "express";
 import {
   userRegisterationController,
   allUserController,
+  singleUserController,
 } from "../controllers/userController.js";
 import upload from "../multerConfig/storageConfig.js";
 
@@ -14,5 +15,7 @@ router.post(
 );
 
 router.get("/home", allUserController);
+
+router.get("/profile/:id", singleUserController);
 
 export default router;

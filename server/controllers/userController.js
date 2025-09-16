@@ -58,4 +58,14 @@ const allUserController = async (req, res) => {
   }
 };
 
-export { userRegisterationController, allUserController };
+const singleUserController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await User.findOne({ _id: id });
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export { userRegisterationController, allUserController, singleUserController };
