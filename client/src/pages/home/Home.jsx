@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
-import { userContext } from "../../contexts/userContext";
+import { userContext, updateContext } from "../../contexts/userContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -12,6 +12,7 @@ import "./home.css";
 const Home = () => {
   const [showspin, setShowSpin] = useState(true);
   const { user, setUser } = useContext(userContext);
+  const { updateUser, setUpdateUser } = useContext(updateContext);
   const [allUser, setAllUser] = useState([]);
   const navigate = useNavigate();
 
@@ -55,6 +56,21 @@ const Home = () => {
           </p>
         </Alert>
       )}
+
+      {updateUser && (
+        <Alert
+          variant="primary"
+          onClose={() => setUpdateUser(null)}
+          dismissible
+          className="shadow-lg rounded-3"
+        >
+          <Alert.Heading>Registration Successful 🎉</Alert.Heading>
+          <p>
+            <strong>{updateUser.firstName}</strong> has been successfully added!
+          </p>
+        </Alert>
+      )}
+
       <div className="container-fluid">
         <div
           className="main_div"

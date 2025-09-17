@@ -68,4 +68,46 @@ const singleUserController = async (req, res) => {
   }
 };
 
-export { userRegisterationController, allUserController, singleUserController };
+const userEditController = async (req, res) => {
+  let file;
+  const { id } = req.params;
+  if (req.file) {
+    file = req.file.filename;
+  } else {
+    file = req.body.profileImg;
+  }
+  const { firstName, lastName, email, mobile, location, gender, status } =
+    req.body;
+
+  const dateUpdated = moment().format("YYYY-MM-DD HH:mm:ss");
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        firstName,
+        lastName,
+        email,
+        mobile,
+        location,
+        gender,
+        status,
+        profileImg: file,
+        dateUpdated,
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export {
+  userRegisterationController,
+  allUserController,
+  singleUserController,
+  userEditController,
+};

@@ -115,7 +115,9 @@ const Tables = ({ users }) => {
                       );
                     })
                   ) : (
-                    <div className="text-center">No user found</div>
+                    <tr className="text-center ">
+                      <td>No user found</td>
+                    </tr>
                   )}
                 </tbody>
               </Table>

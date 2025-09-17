@@ -30,3 +30,13 @@ export const singleUserGetAPI = async (id) => {
   );
   return response;
 };
+
+export const updateUserAPI = async (id, data, header) => {
+  const response = await commonRequest(
+    `${BASE_URL}/user/edit/${id}`,
+    "PUT",
+    header,
+    data
+  );
+  return response;
+};

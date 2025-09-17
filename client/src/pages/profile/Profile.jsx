@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import { useParams } from "react-router-dom";
 import Spiner from "../../components/spiner/Spiner";
 import { singleUserGetAPI } from "../../services/apis";
+import moment from "moment";
 
 import { BASE_URL } from "../../services/helper";
 
@@ -12,17 +13,6 @@ const Profile = () => {
   const [showspin, setShowSpin] = useState(true);
   const { id } = useParams();
   const [user, setUser] = useState({});
-
-  const profileData = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    mobile: "123-456-7890",
-    location: "New York, NY",
-    gender: "male",
-    status: "active",
-    profileImg: "/avatar.jpg",
-  };
 
   const getUser = async () => {
     const response = await singleUserGetAPI(id);
@@ -85,6 +75,10 @@ const Profile = () => {
                 </Col>
                 <Col lg={6} className="mb-3">
                   <strong>Location:</strong> {user.location}
+                </Col>
+                <Col lg={6} className="mb-3">
+                  <strong>Created At:</strong>{" "}
+                  {moment(user.dateCreated).format("DD-MM-YYYY")}
                 </Col>
               </Row>
             </Card.Body>
