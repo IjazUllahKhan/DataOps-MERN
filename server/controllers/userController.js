@@ -105,9 +105,20 @@ const userEditController = async (req, res) => {
   }
 };
 
+const userDeleteController = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await User.findByIdAndDelete({ _id: id });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export {
   userRegisterationController,
   allUserController,
   singleUserController,
   userEditController,
+  userDeleteController,
 };

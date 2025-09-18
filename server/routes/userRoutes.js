@@ -4,6 +4,7 @@ import {
   allUserController,
   singleUserController,
   userEditController,
+  userDeleteController,
 } from "../controllers/userController.js";
 import upload from "../multerConfig/storageConfig.js";
 
@@ -20,5 +21,7 @@ router.get("/home", allUserController);
 router.get("/profile/:id", singleUserController);
 
 router.put("/edit/:id", upload.single("profileImg"), userEditController);
+
+router.delete("/delete/:id", userDeleteController);
 
 export default router;

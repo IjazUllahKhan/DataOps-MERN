@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { BASE_URL } from "../../services/helper";
 import "./table.css";
 
-const Tables = ({ users }) => {
+const Tables = ({ users, deleteUserCall }) => {
   return (
     <>
       <div className="container-fluid">
@@ -75,32 +75,30 @@ const Tables = ({ users }) => {
                                 <i className="fa-solid fa-ellipsis-vertical"></i>
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
-                                <Dropdown.Item>
-                                  <NavLink
-                                    to={`/profile/${element._id}`}
-                                    className="text-decoration-none"
-                                  >
-                                    <i
-                                      class="fa-solid fa-eye"
-                                      style={{ color: "green" }}
-                                    ></i>{" "}
-                                    <span>View</span>
-                                  </NavLink>
+                                <Dropdown.Item
+                                  as={NavLink}
+                                  to={`/profile/${element._id}`}
+                                >
+                                  <i
+                                    className="fa-solid fa-eye"
+                                    style={{ color: "green" }}
+                                  ></i>{" "}
+                                  <span>View</span>
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  as={NavLink}
+                                  to={`/edit/${element._id}`}
+                                >
+                                  <i
+                                    className="fa-solid fa-pen-to-square"
+                                    style={{ color: "blue" }}
+                                  ></i>{" "}
+                                  <span>Edit</span>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                  <NavLink
-                                    to={`/edit/${element._id}`}
-                                    className="text-decoration-none"
+                                  <div
+                                    onClick={() => deleteUserCall(element._id)}
                                   >
-                                    <i
-                                      className="fa-solid fa-pen-to-square"
-                                      style={{ color: "blue" }}
-                                    ></i>{" "}
-                                    <span>Edit</span>
-                                  </NavLink>
-                                </Dropdown.Item>
-                                <Dropdown.Item>
-                                  <div>
                                     <i
                                       className="fa-solid fa-trash"
                                       style={{ color: "red" }}

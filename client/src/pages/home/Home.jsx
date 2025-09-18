@@ -6,8 +6,10 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Tables from "../../components/Tables1/Tables";
 import Spiner from "../../components/spiner/Spiner";
-import { usersGetAPI } from "../../services/apis";
+import { usersGetAPI, deleteUserAPI } from "../../services/apis";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./home.css";
 const Home = () => {
   const [showspin, setShowSpin] = useState(true);
@@ -33,9 +35,21 @@ const Home = () => {
     }
   };
 
+  const deleteUserCall = async (id) => {
+    try {
+      const response = await deleteUserAPI(id);
+      if (response.status == 200) {
+        fetchData();
+      } else {
+        toast.error("Error");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
-
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
@@ -173,9 +187,14 @@ const Home = () => {
               </div>
             </div>
           </div>
-          {showspin ? <Spiner /> : <Tables users={allUser} />}
+          {showspin ? (
+            <Spiner />
+          ) : (
+            <Tables deleteUserCall={deleteUserCall} users={allUser} />
+          )}
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

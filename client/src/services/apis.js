@@ -40,3 +40,13 @@ export const updateUserAPI = async (id, data, header) => {
   );
   return response;
 };
+
+export const deleteUserAPI = async (id) => {
+  const response = await commonRequest(
+    `${BASE_URL}/user/delete/${id}`,
+    "DELETE",
+    null,
+    {}
+  );
+  return response;
+};
