@@ -46,16 +46,23 @@ const userRegisterationController = async (req, res) => {
 };
 
 const allUserController = async (req, res) => {
-  const search = req.query.search;
-  const gender = req.query.gender;
+  const search = req.query.search || "";
+  const gender = req.query.gender || "";
+  const status = req.query.status || "";
+  const sort = req.query.sort || "";
   const query = {
     firstName: { $regex: search, $options: "i" },
   };
   if (gender != "All") {
     query.gender = gender;
   }
+  if (status != "All") {
+    query.status = status;
+  }
   try {
-    const users = await User.find(query);
+    const users = await User.find(query).sort({
+      dateCreated: sort == "new" ? -1 : 1,
+    });
     if (users.length > 0) {
       return res.status(200).json(users);
     } else {
@@ -123,10 +130,26 @@ const userDeleteController = async (req, res) => {
   }
 };
 
+const statusController = async (req, res) => {
+  const { id } = req.params;
+  const status = req.body.status;
+  try {
+    const response = await User.findByIdAndUpdate(
+      { _id: id },
+      { status },
+      { new: true }
+    );
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export {
   userRegisterationController,
   allUserController,
   singleUserController,
   userEditController,
   userDeleteController,
+  statusController,
 };

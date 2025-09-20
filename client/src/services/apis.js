@@ -1,6 +1,7 @@
 import { commonRequest } from "./apiCall";
 import { BASE_URL } from "./helper";
 
+// Register api
 export const registerAPI = async (data, header) => {
   const response = await commonRequest(
     `${BASE_URL}/user/register`,
@@ -11,15 +12,18 @@ export const registerAPI = async (data, header) => {
   return response;
 };
 
-export const usersGetAPI = async (search, gender) => {
+// User get api
+export const usersGetAPI = async (search, gender, status, sort) => {
   const response = await commonRequest(
-    `${BASE_URL}/user/home?search=${search}&gender=${gender}`,
+    `${BASE_URL}/user/home?search=${search}&gender=${gender}&status=${status}&sort=${sort}`,
     "GEt",
     null,
     ""
   );
   return response;
 };
+
+// Single user get api
 
 export const singleUserGetAPI = async (id) => {
   const response = await commonRequest(
@@ -31,6 +35,8 @@ export const singleUserGetAPI = async (id) => {
   return response;
 };
 
+// update user api
+
 export const updateUserAPI = async (id, data, header) => {
   const response = await commonRequest(
     `${BASE_URL}/user/edit/${id}`,
@@ -41,12 +47,26 @@ export const updateUserAPI = async (id, data, header) => {
   return response;
 };
 
+// Delete user api
+
 export const deleteUserAPI = async (id) => {
   const response = await commonRequest(
     `${BASE_URL}/user/delete/${id}`,
     "DELETE",
     null,
     {}
+  );
+  return response;
+};
+
+// Status update api
+
+export const StatusUpdateAPI = async (id, status) => {
+  const response = await commonRequest(
+    `${BASE_URL}/user/status/${id}`,
+    "PUT",
+    null,
+    { status }
   );
   return response;
 };

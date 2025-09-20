@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
@@ -7,8 +7,19 @@ import Badge from "react-bootstrap/Badge";
 import { NavLink } from "react-router-dom";
 import { BASE_URL } from "../../services/helper";
 import "./table.css";
+import { StatusUpdateAPI } from "../../services/apis";
+import { toast, ToastContainer } from "react-toastify";
 
-const Tables = ({ users, deleteUserCall }) => {
+const Tables = ({ users, deleteUserCall, fetchData }) => {
+  const statusHandler = async (id, status) => {
+    const response = await StatusUpdateAPI(id, status);
+    if (response.status == 200) {
+      toast("Status Update");
+      fetchData();
+    } else {
+      toast("Error");
+    }
+  };
   return (
     <>
       <div className="container-fluid">
@@ -54,8 +65,20 @@ const Tables = ({ users, deleteUserCall }) => {
                                 </Badge>
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
-                                <Dropdown.Item>Active</Dropdown.Item>
-                                <Dropdown.Item>InActive</Dropdown.Item>
+                                <Dropdown.Item
+                                  onClick={() =>
+                                    statusHandler(element._id, "active")
+                                  }
+                                >
+                                  Active
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  onClick={() =>
+                                    statusHandler(element._id, "inactive")
+                                  }
+                                >
+                                  InActive
+                                </Dropdown.Item>
                               </Dropdown.Menu>
                             </Dropdown>
                           </td>
@@ -123,6 +146,7 @@ const Tables = ({ users, deleteUserCall }) => {
           </div>
         </Row>
       </div>
+      <ToastContainer />
     </>
   );
 };

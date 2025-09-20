@@ -12,6 +12,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./home.css";
 const Home = () => {
+  const [sort, setSort] = useState("new");
+  const [status, setStatus] = useState("All");
   const [gender, setGender] = useState("All");
   const [searchInput, setSearchInput] = useState("");
   const [deleteUser, setDeleteUser] = useState(null);
@@ -27,7 +29,7 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const response = await usersGetAPI(searchInput, gender);
+      const response = await usersGetAPI(searchInput, gender, status, sort);
       if (response.status == 200) {
         setAllUser(response.data);
       } else {
@@ -58,7 +60,7 @@ const Home = () => {
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
-  }, [searchInput, gender]);
+  }, [searchInput, gender, status, sort]);
 
   return (
     <>
@@ -183,8 +185,20 @@ const Home = () => {
                   <i className="fa-solid fa-sort"></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item>New</Dropdown.Item>
-                  <Dropdown.Item>Old</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      setSort("new");
+                    }}
+                  >
+                    New
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      setSort("old");
+                    }}
+                  >
+                    Old
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -200,18 +214,21 @@ const Home = () => {
                     name="status"
                     value={"All"}
                     defaultChecked
+                    onClick={(e) => setStatus("All")}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`Active`}
                     name="status"
-                    value={"Active"}
+                    value={"active"}
+                    onClick={(e) => setStatus("active")}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`InActive`}
                     name="status"
-                    value={"InActive"}
+                    value={"inActive"}
+                    onClick={(e) => setStatus("inactive")}
                   />
                 </div>
               </div>
@@ -220,7 +237,11 @@ const Home = () => {
           {showspin ? (
             <Spiner />
           ) : (
-            <Tables deleteUserCall={deleteUserCall} users={allUser} />
+            <Tables
+              fetchData={fetchData}
+              deleteUserCall={deleteUserCall}
+              users={allUser}
+            />
           )}
         </div>
       </div>
