@@ -12,6 +12,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./home.css";
 const Home = () => {
+  const [gender, setGender] = useState("All");
+  const [searchInput, setSearchInput] = useState("");
+  const [deleteUser, setDeleteUser] = useState(null);
   const [showspin, setShowSpin] = useState(true);
   const { user, setUser } = useContext(userContext);
   const { updateUser, setUpdateUser } = useContext(updateContext);
@@ -24,10 +27,11 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const response = await usersGetAPI();
+      const response = await usersGetAPI(searchInput, gender);
       if (response.status == 200) {
         setAllUser(response.data);
       } else {
+        setAllUser([]);
         console.log("Error while fetching users");
       }
     } catch (error) {
@@ -39,6 +43,7 @@ const Home = () => {
     try {
       const response = await deleteUserAPI(id);
       if (response.status == 200) {
+        setDeleteUser(response.data);
         fetchData();
       } else {
         toast.error("Error");
@@ -53,10 +58,25 @@ const Home = () => {
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
-  }, []);
+  }, [searchInput, gender]);
 
   return (
     <>
+      {deleteUser && (
+        <Alert
+          variant="danger"
+          onClose={() => setUser(null)}
+          dismissible
+          className="shadow-lg rounded-3"
+        >
+          <Alert.Heading>Deletion Successful 🎉</Alert.Heading>
+          <p>
+            <strong>{deleteUser.firstName}</strong> has been successfully
+            deleted!
+          </p>
+        </Alert>
+      )}
+
       {user && (
         <Alert
           variant="success"
@@ -99,6 +119,7 @@ const Home = () => {
                   placeholder="Search"
                   className="me-2"
                   aria-label="Search"
+                  onChange={(e) => setSearchInput(e.target.value)}
                 />
                 <Button variant="success" className="search_btn">
                   Search
@@ -128,18 +149,27 @@ const Home = () => {
                     name="gender"
                     value={"All"}
                     defaultChecked
+                    onChange={(e) => {
+                      setGender(e.target.value);
+                    }}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`Male`}
                     name="gender"
-                    value={"Male"}
+                    value={"male"}
+                    onChange={(e) => {
+                      setGender(e.target.value);
+                    }}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`Female`}
                     name="gender"
-                    value={"Female"}
+                    value={"female"}
+                    onChange={(e) => {
+                      setGender(e.target.value);
+                    }}
                   />
                 </div>
               </div>

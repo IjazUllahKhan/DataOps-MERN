@@ -46,8 +46,16 @@ const userRegisterationController = async (req, res) => {
 };
 
 const allUserController = async (req, res) => {
+  const search = req.query.search;
+  const gender = req.query.gender;
+  const query = {
+    firstName: { $regex: search, $options: "i" },
+  };
+  if (gender != "All") {
+    query.gender = gender;
+  }
   try {
-    const users = await User.find({});
+    const users = await User.find(query);
     if (users.length > 0) {
       return res.status(200).json(users);
     } else {
