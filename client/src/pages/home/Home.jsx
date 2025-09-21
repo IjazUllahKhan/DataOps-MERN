@@ -21,7 +21,23 @@ const Home = () => {
   const { user, setUser } = useContext(userContext);
   const { updateUser, setUpdateUser } = useContext(updateContext);
   const [allUser, setAllUser] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
+
+  const prevHandler = async () => {
+    setPage(() => {
+      if (page == 1) return page;
+      return page - 1;
+    });
+  };
+
+  const nextHandler = async () => {
+    setPage(() => {
+      if (page == totalPages) return page;
+      return page + 1;
+    });
+  };
 
   const adduser = () => {
     navigate("/register");
@@ -29,9 +45,16 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const response = await usersGetAPI(searchInput, gender, status, sort);
+      const response = await usersGetAPI(
+        searchInput,
+        gender,
+        status,
+        sort,
+        page
+      );
       if (response.status == 200) {
-        setAllUser(response.data);
+        setAllUser(response.data.users);
+        setTotalPages(response.data.pagination.totalPages);
       } else {
         setAllUser([]);
         console.log("Error while fetching users");
@@ -60,7 +83,7 @@ const Home = () => {
     setTimeout(() => {
       setShowSpin(false);
     }, 1200);
-  }, [searchInput, gender, status, sort]);
+  }, [searchInput, gender, status, sort, page]);
 
   const exportHandler = async () => {
     const response = await csvExportAPI();
@@ -252,6 +275,11 @@ const Home = () => {
               fetchData={fetchData}
               deleteUserCall={deleteUserCall}
               users={allUser}
+              page={page}
+              setPage={setPage}
+              totalPages={totalPages}
+              nextHandler={nextHandler}
+              prevHandler={prevHandler}
             />
           )}
         </div>

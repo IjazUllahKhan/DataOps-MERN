@@ -13,9 +13,9 @@ export const registerAPI = async (data, header) => {
 };
 
 // User get api
-export const usersGetAPI = async (search, gender, status, sort) => {
+export const usersGetAPI = async (search, gender, status, sort, page) => {
   const response = await commonRequest(
-    `${BASE_URL}/user/home?search=${search}&gender=${gender}&status=${status}&sort=${sort}`,
+    `${BASE_URL}/user/home?search=${search}&gender=${gender}&status=${status}&sort=${sort}&page=${page}`,
     "GEt",
     null,
     ""

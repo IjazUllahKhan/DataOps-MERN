@@ -52,6 +52,11 @@ const allUserController = async (req, res) => {
   const gender = req.query.gender || "";
   const status = req.query.status || "";
   const sort = req.query.sort || "";
+  const page = req.query.page || 1;
+  const usersPerPage = 3;
+
+  const skip = (page - 1) * usersPerPage;
+
   const query = {
     firstName: { $regex: search, $options: "i" },
   };
@@ -62,11 +67,21 @@ const allUserController = async (req, res) => {
     query.status = status;
   }
   try {
-    const users = await User.find(query).sort({
-      dateCreated: sort == "new" ? -1 : 1,
-    });
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / usersPerPage);
+    const users = await User.find(query)
+      .sort({
+        dateCreated: sort == "new" ? -1 : 1,
+      })
+      .skip(skip)
+      .limit(usersPerPage);
     if (users.length > 0) {
-      return res.status(200).json(users);
+      return res.status(200).json({
+        pagination: {
+          totalPages,
+        },
+        users,
+      });
     } else {
       return res.status(404).json({ message: "No users found" });
     }

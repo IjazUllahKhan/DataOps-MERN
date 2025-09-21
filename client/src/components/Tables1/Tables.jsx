@@ -9,8 +9,18 @@ import { BASE_URL } from "../../services/helper";
 import "./table.css";
 import { StatusUpdateAPI } from "../../services/apis";
 import { toast, ToastContainer } from "react-toastify";
+import Paginations from "../pagination/Pagination";
 
-const Tables = ({ users, deleteUserCall, fetchData }) => {
+const Tables = ({
+  users,
+  deleteUserCall,
+  fetchData,
+  nextHandler,
+  prevHandler,
+  setPage,
+  totalPages,
+  page,
+}) => {
   const statusHandler = async (id, status) => {
     const response = await StatusUpdateAPI(id, status);
     if (response.status == 200) {
@@ -142,6 +152,17 @@ const Tables = ({ users, deleteUserCall, fetchData }) => {
                   )}
                 </tbody>
               </Table>
+              {totalPages > 1 ? (
+                <Paginations
+                  page={page}
+                  setPage={setPage}
+                  totalPages={totalPages}
+                  nextHandler={nextHandler}
+                  prevHandler={prevHandler}
+                />
+              ) : (
+                ""
+              )}
             </Card>
           </div>
         </Row>
