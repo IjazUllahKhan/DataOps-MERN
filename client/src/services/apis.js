@@ -70,3 +70,16 @@ export const StatusUpdateAPI = async (id, status) => {
   );
   return response;
 };
+
+// Export csv api
+
+export const csvExportAPI = async () => {
+  const response = await commonRequest(
+    `${BASE_URL}/user/csvExport`,
+    "GET",
+    null,
+    ""
+  );
+
+  return response;
+};

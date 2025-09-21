@@ -1,5 +1,7 @@
 import User from "../models/userModel.js";
 import moment from "moment/moment.js";
+import fs from "node:fs";
+import csv from "fast-csv";
 
 const userRegisterationController = async (req, res) => {
   const file = req.file.filename;
@@ -145,6 +147,55 @@ const statusController = async (req, res) => {
   }
 };
 
+// Csv export controller
+
+const csvExportController = async (req, res) => {
+  try {
+    const usersData = await User.find();
+    if (usersData.length > 0) {
+      if (!fs.existsSync("./public/exports")) {
+        if (!fs.existsSync("./public")) {
+          fs.mkdirSync("./public");
+        }
+        if (!fs.existsSync("./public/exports")) {
+          fs.mkdirSync("./public/exports");
+        }
+      }
+
+      const csvStream = csv.format({ headers: true });
+      const fileStream = fs.createWriteStream("./public/exports/export.csv");
+      csvStream.pipe(fileStream);
+
+      csvStream.on("finish", () => {
+        return res.json({
+          downloadUrl: "http://localhost:7000/public/export.csv",
+        });
+      });
+
+      usersData.map((user) => {
+        csvStream.write({
+          FirstName: user.firstName || "-",
+          LastName: user.lastName || "-",
+          Email: user.email || "-",
+          Mobile: user.mobile || "-",
+          Location: user.location || "-",
+          Gender: user.gender || "-",
+          Status: user.status || "-",
+          ProfileImage: user.profileImg || "-",
+          DateCreated: user.dateCreated || "-",
+          DateUpdated: user.dateUpdated || "-",
+        });
+      });
+      fileStream.close();
+      csvStream.end();
+    } else {
+      return res.status(404).json({ msg: "NO user found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export {
   userRegisterationController,
   allUserController,
@@ -152,4 +203,5 @@ export {
   userEditController,
   userDeleteController,
   statusController,
+  csvExportController,
 };

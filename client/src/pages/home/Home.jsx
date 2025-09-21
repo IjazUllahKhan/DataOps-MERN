@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Tables from "../../components/Tables1/Tables";
 import Spiner from "../../components/spiner/Spiner";
-import { usersGetAPI, deleteUserAPI } from "../../services/apis";
+import { usersGetAPI, deleteUserAPI, csvExportAPI } from "../../services/apis";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -61,6 +61,15 @@ const Home = () => {
       setShowSpin(false);
     }, 1200);
   }, [searchInput, gender, status, sort]);
+
+  const exportHandler = async () => {
+    const response = await csvExportAPI();
+    if (response.status == 200) {
+      window.open(response.data.downloadUrl, "_blank");
+    } else {
+      toast("Error");
+    }
+  };
 
   return (
     <>
@@ -139,7 +148,9 @@ const Home = () => {
 
           <div className="filter_div mt-5 d-flex justify-content-between flex-wrap">
             <div className="export_csv">
-              <Button className="export_btn">Export To Csv</Button>
+              <Button className="export_btn" onClick={exportHandler}>
+                Export To Csv
+              </Button>
             </div>
             <div className="filter_gender">
               <div className="filter">
@@ -179,7 +190,7 @@ const Home = () => {
 
             {/* short by value */}
             <div className="filter_newold">
-              <h3>Short By Value</h3>
+              <h3>Sort By Value</h3>
               <Dropdown className="text-center">
                 <Dropdown.Toggle className="dropdown_btn" id="dropdown-basic">
                   <i className="fa-solid fa-sort"></i>
