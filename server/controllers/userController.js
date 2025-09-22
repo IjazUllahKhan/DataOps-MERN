@@ -2,7 +2,6 @@ import User from "../models/userModel.js";
 import moment from "moment/moment.js";
 import fs from "node:fs";
 import csv from "fast-csv";
-
 const userRegisterationController = async (req, res) => {
   const file = req.file.filename;
   const { firstName, lastName, email, mobile, location, gender, status } =
@@ -165,6 +164,7 @@ const statusController = async (req, res) => {
 // Csv export controller
 
 const csvExportController = async (req, res) => {
+  const BASE_URL = process.env.BASE_URL;
   try {
     const usersData = await User.find();
     if (usersData.length > 0) {
@@ -183,7 +183,7 @@ const csvExportController = async (req, res) => {
 
       csvStream.on("finish", () => {
         return res.json({
-          downloadUrl: "http://localhost:7000/public/export.csv",
+          downloadUrl: `${BASE_URL}/public/export.csv`,
         });
       });
 
